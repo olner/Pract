@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="NSwag.ApiDescription.Client" Version="13.17.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <OpenApiReference Include="swagger.json">
+            <Namespace>Split.WebClient</Namespace>
+            <ClassName>SplitServiceApi</ClassName>
+            <Options>/GenerateClientInterfaces:true /DateType:System.DateTime /DateTimeType:System.DateTime /UseBaseUrl:false /GenerateOptionalPropertiesAsNullable:true</Options>
+        </OpenApiReference>
+    </ItemGroup>
+
+</Project>
