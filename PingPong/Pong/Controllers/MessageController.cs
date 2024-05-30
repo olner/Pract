@@ -20,31 +20,39 @@ namespace Pong.Controllers
             public T? Response { get; set; }
         }
 
-
         [HttpPost("/addMessage")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<Message>))]
         public IActionResult AddMessage(string text, Guid id)
         {
             
             using var context = contextFactory.CreateDbContext();
+            var messageId = Guid.NewGuid().ToString();
             Messages message = new Messages
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = messageId,
                 Text = text,
                 IdUser = id.ToString()
             };
             context.Messages.Add(message);
             context.SaveChanges();
-            return Ok();
+            var response = new Message
+            {
+                Id = messageId,
+                Text = text,
+                Status = 1
+            };
+            return Ok(new ServiceResponse<Message> { Response = response});
         }
 
         [HttpGet("/getMessage")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<Message>))]
-        public IActionResult GetMessage(Guid userId,Guid id)
+        public IActionResult GetMessage(Guid userId,Guid messageId)
         {
             using var context = contextFactory.CreateDbContext();
             var rawMessage = context.Messages
-                .Where(x => x.Id == id.ToString()).FirstOrDefault();
+                .Where(x => x.Id == messageId.ToString()).FirstOrDefault();
             Message message = new Message
             {
                 Id = rawMessage.Id,
@@ -79,6 +87,8 @@ namespace Pong.Controllers
         }
 
         [HttpDelete("/deleteMessage")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<int>))]
         public IActionResult DeleteMesage(Guid userId,Guid messageId)
         {
             using var context = contextFactory.CreateDbContext();
@@ -86,7 +96,7 @@ namespace Pong.Controllers
                 .Where(x => x.Id == messageId.ToString()).FirstOrDefault();
             context.Messages.Remove(rawMessage);
             context.SaveChanges();
-            return Ok();
+            return Ok(new ServiceResponse<int> { Response = 1 });
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PingPong.WebClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Ping
 {
-    internal interface ISender
+    public interface ISender
     {
-        public void AddMessage();
-        public Message GetMessage();
-        public List<Message> GetMessageList();
-        public void RemoveMessage();
+        public Task<Message> AddMessage(string message);
+        public Task<Message> GetMessage(Guid id);
+        public Task<List<Message>> GetMessageList(Guid id);
+        public Task<Message> DeleteMessage(Guid id);
     }
 }

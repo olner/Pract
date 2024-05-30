@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ping
 {
-    public record Message
+    internal static class DummyUser
     {
-        public string Id { get; set; }
-
-        public string Text { get; set; }
+        public static Guid Id {  get; set; }
 
     }
 }

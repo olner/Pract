@@ -17,25 +17,28 @@ namespace Ping
             client = new PingPongApi(httpClient);
         }
 
-        public async void AddMessage()
+        public async Task<Message> AddMessage(string message)
         {
-            var message = client.AddMessageAsync();
+            var serviceResponse = await client.AddMessageAsync(message, DummyUser.Id);
+            return serviceResponse.Response;
+        }
+
+        public async Task<Message> DeleteMessage(Guid id)
+        {
+            var serviceResponse = await client.DeleteMessageAsync(DummyUser.Id,id);
             throw new NotImplementedException();
         }
 
-        public void RemoveMessage()
+        public async Task<Message> GetMessage(Guid id)
         {
-            throw new NotImplementedException();
+            var serviceResponse = await client.GetMessageAsync(DummyUser.Id,id);
+            return serviceResponse.Response;
         }
 
-        Message ISender.GetMessage()
+        public async Task<List<Message>> GetMessageList(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        List<Message> ISender.GetMessageList()
-        {
-            throw new NotImplementedException();
+            var serviceResponse = await client.GetMessageListAsync(DummyUser.Id, id);
+            return (List<Message>)serviceResponse.Response;
         }
     }
 }
